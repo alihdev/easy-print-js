@@ -1,0 +1,33 @@
+{
+  "name": "easy-print-js",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "print",
+    "print-js",
+    "easy-print-js",
+    "print-js-html",
+    "print-html",
+    "easy-print-html"
+  ],
+  "author": "Ali Hassan <AH> (https://github.com/alihdev)",
+  "homepage": "https://github.com/alihdev/easy-print-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alihdev/easy-print-js"
+  },
+  "bugs": {
+    "url": "https://github.com/alihdev/easy-print-js/issues"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
