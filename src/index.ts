@@ -8,7 +8,9 @@ import {
   injectPrintStyles,
 } from "./helper";
 
-export async function easyPrint(opt: { elementId: string }): Promise<void> {
+import { EasyPrintOptions } from "./types";
+
+export async function easyPrint(opt: EasyPrintOptions): Promise<void> {
   await waitForDomReady();
 
   const source = document.getElementById(opt.elementId);
