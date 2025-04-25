@@ -1,10 +1,11 @@
 # 🖨️ easy-print-js
 
-A lightweight, **pure JavaScript** utility to print HTML elements by ID.
+A lightweight, **pure JavaScript** utility to print HTML elements by ID — with full support for structured layouts including header, content, and footer.
 
 - ✅ Framework-agnostic — works with Vue, React, Angular, etc.
 - ✅ No dependencies
-- ✅ Simple and elegant API
+- ✅ Fully DOM-based (no innerHTML hacks)
+- ✅ Supports header, content, and footer injection
 
 ---
 
@@ -22,7 +23,7 @@ pnpm add easy-print-js
 
 ## ⚡ Quick Usage
 
-> You can also use a bundler like Vite, Webpack, or import it in any framework.
+> You can use this package in plain HTML/JS or any framework like Vue, React, Angular, etc.
 
 ---
 
@@ -33,19 +34,33 @@ pnpm add easy-print-js
 import { print } from 'easy-print-js'
 
 function printSection() {
-  print({ elementId: 'invoice' })
+  print({
+    contentElementId: 'invoice',
+    headerElementId: 'print-header',
+    footerElementId: 'print-footer'
+  })
 }
 </script>
 
 <template>
   <div>
+    <!-- Hidden printable content -->
     <div style="display: none">
+      <div id="print-header">
+        <h1>Company Name</h1>
+      </div>
+
       <div id="invoice">
         <h2>Invoice #123</h2>
         <p>Total: $42</p>
       </div>
+
+      <div id="print-footer">
+        <small>Thank you for your business!</small>
+      </div>
     </div>
 
+    <!-- Visible trigger -->
     <button @click="printSection">Print Invoice</button>
   </div>
 </template>
@@ -55,11 +70,15 @@ function printSection() {
 
 ## 🔧 API
 
-### `print(options: { elementId: string }): Promise<void>`
+### `print(options: EasyPrintOptions): Promise<void>`
 
-| Option       | Type     | Required | Description                          |
-|--------------|----------|----------|--------------------------------------|
-| `elementId`  | `string` | ✅       | The ID of the HTML element to print |
+| Option             | Type     | Required | Description                                    |
+|--------------------|----------|----------|------------------------------------------------|
+| `contentElementId` | `string` | ✅       | The ID of the main body content element       |
+| `headerElementId`  | `string` | ❌       | Optional element to show at the top of print  |
+| `footerElementId`  | `string` | ❌       | Optional element to show at the bottom        |
+
+> The elements are cloned and inserted into a print-specific structure using `<thead>`, `<tbody>`, and `<tfoot>`.
 
 ---
 
