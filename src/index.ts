@@ -6,6 +6,7 @@ import {
   cleanupAfterPrint,
   printPage,
   injectPrintStyles,
+  buildPrintStructure,
 } from "./helper";
 
 import { EasyPrintOptions } from "./types";
@@ -13,13 +14,11 @@ import { EasyPrintOptions } from "./types";
 export async function easyPrint(opt: EasyPrintOptions): Promise<void> {
   await waitForDomReady();
 
-  const source = document.getElementById(opt.elementId);
-  if (!source) return console.error("Element not found:", opt.elementId);
-
+  const html = buildPrintStructure(opt);
   const printContainer = getOrCreatePrintContainer();
-  injectContentToPrint(printContainer, source.innerHTML);
+  injectContentToPrint(printContainer, html);
 
-  injectPrintStyles()
+  injectPrintStyles();
   await waitForRender();
 
   printPage();

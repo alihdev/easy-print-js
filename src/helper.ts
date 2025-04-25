@@ -1,3 +1,5 @@
+import { EasyPrintOptions } from "./types";
+
 export function waitForDomReady(): Promise<void> {
   return new Promise((resolve) => {
     if (document.readyState === "complete") return resolve();
@@ -21,9 +23,9 @@ export function getOrCreatePrintContainer(
 
 export function injectContentToPrint(
   container: HTMLElement,
-  content: string
+  content: HTMLElement
 ): void {
-  container.innerHTML = content;
+  container.appendChild(content);
 }
 
 export function waitForRender(timeout: number = 50): Promise<void> {
@@ -36,6 +38,57 @@ export function cleanupAfterPrint(container: HTMLElement): void {
 
 export function printPage(): void {
   window.print();
+}
+
+export function buildPrintStructure(opt: EasyPrintOptions): HTMLElement {
+  const headerEl = getElementByIdSafe(opt.headerElementId);
+  const contentEl = getElementByIdSafe(opt.contentElementId);
+  const footerEl = getElementByIdSafe(opt.footerElementId);
+
+  const table = createBaseTable();
+  if (headerEl) createSectionForBaseTable(table, "thead", headerEl);
+  if (contentEl) createSectionForBaseTable(table, "tbody", contentEl);
+  if (footerEl) createSectionForBaseTable(table, "tfoot", footerEl);
+
+  return table;
+}
+
+export function getElementByIdSafe(id?: string): HTMLElement | null {
+  if (!id) return null;
+
+  const el = document.getElementById(id);
+
+  if (!el) {
+    console.error("Element not found:", id);
+    return null;
+  }
+
+  return el;
+}
+
+function createBaseTable(): HTMLTableElement {
+  const table = document.createElement("table");
+  table.id = "easy-print-table";
+  table.style.borderCollapse = "collapse";
+  table.style.inlineSize = "100%";
+  table.style.breakInside = "auto";
+  return table;
+}
+
+function createSectionForBaseTable(
+  table: HTMLTableElement,
+  tag: "thead" | "tbody" | "tfoot",
+  content: HTMLElement
+) {
+  const section = document.createElement(tag);
+  const tr = document.createElement("tr");
+  const th = document.createElement("th");
+
+  th.appendChild(content);
+  tr.appendChild(th);
+  section.appendChild(tr);
+
+  table.appendChild(section);
 }
 
 export function injectPrintStyles(): void {

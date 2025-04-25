@@ -1,3 +1,5 @@
 export interface EasyPrintOptions {
-  elementId: string;
+  contentElementId: string;
+  headerElementId?: string;
+  footerElementId?: string;
 }
